@@ -5,17 +5,6 @@
 */
 import axios from "axios";
 
-const getInfo = () => {
-  axios
-    .get(`https://api.github.com/users/wesley-ryan`)
-    .then((response) => {
-      console.log(response.data);
-    })
-    .catch((err) => {
-      console.log("Error:", err);
-    });
-};
-getInfo();
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -40,9 +29,19 @@ getInfo();
     user, and adding that card to the DOM.
 */
 
+const entryPoint = document.querySelector(".cards");
+
+const inputBox = document.createElement("input");
+inputBox.setAttribute("type", "text");
+inputBox.classList.add("input");
+entryPoint.append(inputBox);
+
+const btn = document.createElement("div");
+
 const followersArray = [];
 
-const cardCreator = ({ user }) => {
+const cardCreator = (user) => {
+  console.log("THIS IS THE USER IN MY CARD CREATOR:", user);
   const card = document.createElement("div");
   const cardImg = document.createElement("img");
   const cardInfo = document.createElement("div");
@@ -51,34 +50,58 @@ const cardCreator = ({ user }) => {
   const cardLocation = document.createElement("p");
   const cardProfile = document.createElement("p");
   const cardLink = document.createElement("a");
+  const cardLinkText = document.createTextNode(user.html_url);
+
   const cardFollower = document.createElement("p");
   const cardFollowing = document.createElement("p");
 
   //position elements
   card.appendChild(cardImg);
-  cardImg.appendChild(cardInfo);
+  card.appendChild(cardInfo);
   cardInfo.appendChild(cardTitle);
-  cardTitle.appendChild(cardSubtitle);
-  cardSubtitle.appendChild(cardLocation);
-  cardLocation.appendChild(cardProfile);
-  cardProfile.appendChild(cardLink);
-  cardLink.appendChild(cardFollower);
-  cardFollower.appendChild(cardFollowing);
+  cardInfo.appendChild(cardSubtitle);
+  cardInfo.appendChild(cardLocation);
+  cardInfo.appendChild(cardProfile);
+  cardLocation.appendChild(cardLink);
+  cardInfo.appendChild(cardLink);
+  cardInfo.appendChild(cardFollower);
+  cardInfo.appendChild(cardFollowing);
+
+  cardLink.appendChild(cardLinkText);
 
   //add content to elements
   card.classList.add("card");
-  cardImg.src = user.image;
+  cardInfo.classList.add("card-info");
+  cardTitle.classList.add("name");
+  cardSubtitle.classList.add("username");
+  cardImg.src = user.avatar_url;
   cardTitle.textContent = user.name;
-  card.cardSubtitle.textContent = user.username;
-  cardProfile.textContent = "Profile:";
-  cardLink.src = user.url;
-  cardFollower.textContent = user.followers;
-  card.cardFollowing.textContent = user.following;
+  cardSubtitle.textContent = user.login;
+  cardLocation.textContent = `Location:${user.location}`;
+  cardProfile.textContent = `Profile:`;
+  cardLink.setAttribute("href", user.html_url);
+
+  cardFollower.textContent = `Followers:${user.followers}`;
+  cardFollowing.textContent = `Following: ${user.following}`;
 
   //do some stuff
 
   return card;
 };
+
+const getInfo = () => {
+  axios
+    .get(`https://api.github.com/users/wesley-ryan`)
+    .then((response) => {
+      let user = response.data;
+      let card = cardCreator(user);
+      entryPoint.appendChild(card);
+    })
+    .catch((err) => {
+      console.log("Error:", err);
+    });
+};
+getInfo();
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
