@@ -3,6 +3,7 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+import axios from "axios";
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -30,6 +31,43 @@
 
 const followersArray = [];
 
+const cardCreator = ({ user }) => {
+  const card = document.createElement("div");
+  const cardImg = document.createElement("img");
+  const cardInfo = document.createElement("div");
+  const cardTitle = document.createElement("h3");
+  const cardSubtitle = document.createElement("p");
+  const cardLocation = document.createElement("p");
+  const cardProfile = document.createElement("p");
+  const cardLink = document.createElement("a");
+  const cardFollower = document.createElement("p");
+  const cardFollowing = document.createElement("p");
+
+  //position elements
+  card.appendChild(cardImg);
+  cardImg.appendChild(cardInfo);
+  cardInfo.appendChild(cardTitle);
+  cardTitle.appendChild(cardSubtitle);
+  cardSubtitle.appendChild(cardLocation);
+  cardLocation.appendChild(cardProfile);
+  cardProfile.appendChild(cardLink);
+  cardLink.appendChild(cardFollower);
+  cardFollower.appendChild(cardFollowing);
+
+  //add content to elements
+  card.classList.add("card");
+  cardImg.src = user.image;
+  cardTitle.textContent = user.name;
+  card.cardSubtitle.textContent = user.username;
+  cardProfile.textContent = "Profile:";
+  cardLink.src = user.url;
+  cardFollower.textContent = user.followers;
+  card.cardFollowing.textContent = user.following;
+
+  //do some stuff
+
+  return card;
+};
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
