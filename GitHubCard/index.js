@@ -29,14 +29,45 @@ import axios from "axios";
     user, and adding that card to the DOM.
 */
 
-const entryPoint = document.querySelector(".cards");
-
-const inputBox = document.createElement("input");
-inputBox.setAttribute("type", "text");
-inputBox.classList.add("input");
-entryPoint.append(inputBox);
+//add input to change user
 
 const btn = document.createElement("div");
+btn.classList.add("button");
+btn.textContent = "Search";
+
+const inputBox = document.createElement("input");
+
+inputBox.setAttribute("type", "text");
+inputBox.classList.add("input");
+
+const entryPoint = document.querySelector(".cards");
+const searchContainer = document.createElement("div");
+searchContainer.classList.add("search-container");
+searchContainer.appendChild(inputBox);
+searchContainer.appendChild(btn);
+entryPoint.append(searchContainer);
+
+const getInput = () => {
+  return inputBox.value;
+};
+
+btn.addEventListener("click", () => {
+  let userName = getInput();
+
+  const getInfo = () => {
+    axios
+      .get(`https://api.github.com/users/${userName}`)
+      .then((response) => {
+        let user = response.data;
+        let card = cardCreator(user);
+        entryPoint.appendChild(card);
+      })
+      .catch((err) => {
+        console.log("Error:", err);
+      });
+  };
+  getInfo();
+});
 
 const followersArray = [];
 
@@ -89,19 +120,6 @@ const cardCreator = (user) => {
   return card;
 };
 
-const getInfo = () => {
-  axios
-    .get(`https://api.github.com/users/wesley-ryan`)
-    .then((response) => {
-      let user = response.data;
-      let card = cardCreator(user);
-      entryPoint.appendChild(card);
-    })
-    .catch((err) => {
-      console.log("Error:", err);
-    });
-};
-getInfo();
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
