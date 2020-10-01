@@ -5,6 +5,17 @@
 */
 import axios from "axios";
 
+const getInfo = () => {
+  axios
+    .get(`https://api.github.com/users/wesley-ryan`)
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((err) => {
+      console.log("Error:", err);
+    });
+};
+getInfo();
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
