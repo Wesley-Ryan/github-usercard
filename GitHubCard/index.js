@@ -52,22 +52,24 @@ const getInput = () => {
 };
 
 btn.addEventListener("click", () => {
-  let userName = getInput();
-
-  const getInfo = () => {
-    axios
-      .get(`https://api.github.com/users/${userName}`)
-      .then((response) => {
-        let user = response.data;
-        let card = cardCreator(user);
-        entryPoint.appendChild(card);
-      })
-      .catch((err) => {
-        console.log("Error:", err);
-      });
-  };
+  userName = getInput();
   getInfo();
 });
+
+let userName = "Wesley-Ryan";
+
+const getInfo = () => {
+  axios
+    .get(`https://api.github.com/users/${userName}`)
+    .then((response) => {
+      let user = response.data;
+      let card = cardCreator(user);
+      entryPoint.appendChild(card);
+    })
+    .catch((err) => {
+      console.log("Error:", err);
+    });
+};
 
 const followersArray = [];
 
@@ -119,6 +121,8 @@ const cardCreator = (user) => {
 
   return card;
 };
+
+getInfo();
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
